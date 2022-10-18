@@ -56,8 +56,8 @@ def minitype_data(X_tr,y_tr,X_test,y_test,theta_1, theta_2):
 
 if __name__ == '__main__':
     # 选择数据集
-    telco = data_in.data_np_telco()
-    #telco = data_in.data_np_lr() # 小规模训练集
+    #telco = data_in.data_np_telco()
+    telco = data_in.data_np_lr() # 小规模训练集
 
     rows, columns = telco.shape
     print(telco.shape)
