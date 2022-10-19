@@ -9,10 +9,10 @@ def newtons_method_gradient(X, theta ,y):
 
 def newtons_method_hessian(X, theta ,y):
     # 负最大对数似然函数的二阶Hessian矩阵
+    m,n = X.shape
     p = sigmoid( np.dot(X, theta))
     q = p.getA1()
-    return X.T.dot(np.diag(q * (1-q)).dot(X))
-    #return X.T.dot(np.diag(p * (1-p)).dot(X))
+    return (1.0/m)*X.T.dot(np.diag(q * (1-q)).dot(X))
 
 def cost(X, theta, y):
     '''
@@ -24,7 +24,7 @@ def cost(X, theta, y):
                              + (1- y).T * np.log( 1 - h))
     return cost
 
-def LR_newton(X, y,tol = 1e-6, max_iter = 10000):
+def LR_newton(X, y, tol = 1e-6, max_iter = 10000):
     process= max_iter / 100
     X = np.mat(X)
     y = np.mat(y)
@@ -38,14 +38,13 @@ def LR_newton(X, y,tol = 1e-6, max_iter = 10000):
         grad = newtons_method_gradient(X, theta, y)
         hessian = newtons_method_hessian(X, theta, y)
         theta = theta - np.linalg.inv(hessian) * grad
-        loss_new = cost(X, theta , y)
         if iter % process == 0:
             print("|",end="")
         if np.all(np.absolute(grad) <= tol):
             break
         iter += 1
 
-    print("\n迭代:",iter,"次",",最大迭代次数: ", max_iter, "损失: ",loss_new)
+    print("\n迭代:",iter,"次",",最大迭代次数: ", max_iter, "损失: ",loss)
     return theta
 
 
