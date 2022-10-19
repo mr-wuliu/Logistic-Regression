@@ -30,23 +30,18 @@ def LR_newton(X, y,tol = 1e-6, max_iter = 10000):
     y = np.mat(y)
     m, n = X.shape
     theta = np.zeros((n,1))
-
+    loss = 1
     iter = 0
     while( iter < max_iter):
         loss = cost(X,theta, y)
-
         # 牛顿迭代法
         grad = newtons_method_gradient(X, theta, y)
         hessian = newtons_method_hessian(X, theta, y)
-
-        #theta = theta  - alpha * (1.0/m) * np.linalg.inv(hessian) * grad
         theta = theta - np.linalg.inv(hessian) * grad
-
         loss_new = cost(X, theta , y)
-
         if iter % process == 0:
             print("|",end="")
-        if abs(loss - loss_new) < tol:
+        if np.all(np.absolute(grad) <= tol):
             break
         iter += 1
 
