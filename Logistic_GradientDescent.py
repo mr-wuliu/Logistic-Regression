@@ -4,7 +4,6 @@ import numpy as np
 def sigmoid(z):
     return 1.0 / (1.0 + np.exp(-z))
 
-
 def cost(X, theta, y):  # 计算损失
     m, n = X.shape
     h = sigmoid((np.dot(X, theta)))
@@ -13,7 +12,7 @@ def cost(X, theta, y):  # 计算损失
     return cost
 
 
-def LR_gradient(X, y, alpha=0.001, tol=1e-6, max_iter=100000):
+def LR_gradient(X, y, alpha=0.01, tol=1e-4, max_iter=100000):
     process = max_iter / 100  # 显示进度
     # matrix 更为方便
     X = np.mat(X)
@@ -29,6 +28,7 @@ def LR_gradient(X, y, alpha=0.001, tol=1e-6, max_iter=100000):
         error = h - y  # 误差项
         grad = (1.0 / m) * np.dot(X.T, error)  # 梯度
         theta = theta - alpha * grad
+
         if (iter % process == 0):
             print("|", end="")
         if np.all(np.absolute(grad) <= tol):
@@ -38,7 +38,7 @@ def LR_gradient(X, y, alpha=0.001, tol=1e-6, max_iter=100000):
     return theta
 
 
-def LR_gradient_norm(X, y, alpha=0.001, Lambda=0.3, tol=1e-6, max_iter=100000):
+def LR_gradient_norm(X, y, alpha=0.01, Lambda=0.5, tol=1e-5, max_iter=100000):
     process = max_iter / 100  # 显示进度
     # matrix 更为方便
     X = np.mat(X)
@@ -53,12 +53,12 @@ def LR_gradient_norm(X, y, alpha=0.001, Lambda=0.3, tol=1e-6, max_iter=100000):
         h = sigmoid(np.dot(X, theta))  # 预测值
         error = h - y  # 误差项
         grad = (1.0 / m) * np.dot(X.T, error)
-        norm = np.copy(theta)
-        norm[0] = 0  # 常数项不参与修正
-        theta = theta - alpha * grad - Lambda * (1.0 / m) * norm
+        norm = Lambda * (np.sum(theta) -theta[0])/ (2 * m) # 常数不参与修正
+        theta = theta - alpha * grad - alpha * norm
+
         if (iter % process == 0):
             print("|", end="")
-        if np.all(np.absolute(grad) <= tol):
+        if np.all(np.absolute(grad + norm)<= tol ):
             break
         iter += 1
     print("\n迭代:", iter, "次", "  最大迭代次数: ", max_iter, "损失: ", loss)

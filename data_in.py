@@ -1,5 +1,3 @@
-import csv
-import pandas
 import pandas as pd
 import numpy as np
 
@@ -17,7 +15,6 @@ def data_np_telco():
     pd_reader =pd.read_csv("./data/telco.csv")
     # 用平均值对空值进行填充
     pd_reader = pd_reader.fillna(pd_reader.mean())
-
     result = np.array(pd_reader, dtype=np.float64)
     return result
 def data_np_lr():
