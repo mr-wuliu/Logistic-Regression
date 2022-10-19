@@ -4,15 +4,16 @@ def sigmoid(z):
     return 1.0/(1.0 + np.exp(-z))
 
 def newtons_method_gradient(X, theta ,y):
-    m, n= X.shape
-    return (1.0/m) * np.dot(X.T, sigmoid( np.dot(X, theta)) - y)
+    m, n = X.shape
+    return (1.0/m) * (X.T @ (sigmoid( X @ theta) - y) )
 
 def newtons_method_hessian(X, theta ,y):
     # 负最大对数似然函数的二阶Hessian矩阵
     m,n = X.shape
-    p = sigmoid( np.dot(X, theta))
+    p = sigmoid(X @ theta)
     q = p.getA1()
-    return (1.0/m)*X.T.dot(np.diag(q * (1-q)).dot(X))
+    #return (1.0/m)*X.T.dot(np.diag(q * (1-q)).dot(X))
+    return (1.0/m) * X.T @ (np.diag(q * (1-q))) @ X
 
 def cost(X, theta, y):
     '''

@@ -6,7 +6,7 @@ def sigmoid(z):
 
 def cost(X, theta, y):  # 计算损失
     m, n = X.shape
-    h = sigmoid((np.dot(X, theta)))
+    h = sigmoid(X @ theta)
     cost = (-1.0 / m) * np.sum(y.T * np.log(h + 1e-6)
                                + (1 - y).T * np.log(1 - h + 1e-6))
     return cost
@@ -24,9 +24,9 @@ def LR_gradient(X, y, alpha=0.01, tol=1e-4, max_iter=100000):
     while (iter < max_iter):
         loss = cost(X, theta, y)
         # 梯度的下降法
-        h = sigmoid(np.dot(X, theta))  # 预测值
+        h = sigmoid(X @ theta)  # 预测值
         error = h - y  # 误差项
-        grad = (1.0 / m) * np.dot(X.T, error)  # 梯度
+        grad = (1.0 / m) * (X.T @ error ) # 梯度
         theta = theta - alpha * grad
 
         if (iter % process == 0):
@@ -50,9 +50,9 @@ def LR_gradient_norm(X, y, alpha=0.01, Lambda=0.5, tol=1e-5, max_iter=100000):
     while (iter < max_iter):
         loss = cost(X, theta, y)
         # 梯度的下降法
-        h = sigmoid(np.dot(X, theta))  # 预测值
+        h = sigmoid(X @ theta)  # 预测值
         error = h - y  # 误差项
-        grad = (1.0 / m) * np.dot(X.T, error)
+        grad = (1.0 / m) * (X.T @ error)
         norm = Lambda * (np.sum(theta) -theta[0])/ (2 * m) # 常数不参与修正
         theta = theta - alpha * grad - alpha * norm
 

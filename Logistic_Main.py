@@ -99,8 +99,5 @@ if __name__ == '__main__':
 
     paint_result(X_tr,y_tr,theta_3,3)
     paint_result(X_test,y_test,theta_3,4)
-    print(theta_1)
-    print(theta_2)
-    print(theta_3)
 
 
